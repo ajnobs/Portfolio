@@ -1,1 +1,119 @@
-
+<!-- Template for email when volunteers have appointments in the selected time period (currently 2 weeks) -->
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+    .button {
+      background-color: white; 
+      color: black; 
+      border: 1px solid #AA2222;
+      border-radius: 10px;
+      padding: 6px 8px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 13px;
+      margin: 4px 2px;
+      transition-duration: 0.3s;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #AA2222;
+      color: white;
+    }
+    </style>
+  </head>
+  
+  <body>
+    <?= toLine ?> <br>
+    <? var data = SpreadsheetApp.getActiveSheet().getDataRange().getValues() ?>
+    <? var now = new Date() ?>
+    <? var wkStart = new Date(now.getTime() + (86400000 * 1)) ?>
+    <? var wkEnd = new Date(now.getTime() + (86400000 * 17)) ?>
+    <? var volEvents = CalendarApp.getCalendarById('DOMAIN.org_ID@group.calendar.google.com').getEvents(wkStart, wkEnd) ?>
+    <? var aptEvents = CalendarApp.getCalendarById('DOMAIN.org_ID@group.calendar.google.com').getEvents(wkStart, wkEnd) ?>
+    <? var volArray = getVols(data); ?>
+    <? var volSkdArr = getVolSkd(volEvents); ?>
+    <? var aptSkdArr = getAptSkd(aptEvents); ?>
+    <p> Here is your schedule for <?= wkStart.toLocaleDateString() ?> through <?= wkEnd.toLocaleDateString() ?></p>
+    <? for (var j = 0; j < volSkdArr.length; j++) { ?>
+      <? if (volSkdArr[j].EventTitle == tempSkdName) { ?>
+        <? var volDate = volSkdArr[j].EventStart.toLocaleDateString() ?>
+        <? var volStart = volSkdArr[j].EventStart.toLocaleTimeString() ?>
+        <? var volEnd = volSkdArr[j].EventEnd.toLocaleTimeString() ?>
+        <p>
+          <b>Date:</b> <?= volDate ?> <br>
+          <b>Your Scheudled Time:</b> <?= volStart ?> - <?= volEnd ?><br>
+          <b>Appointment Schedule: </b> <?= volDate ?>:
+        </p>
+        <ul style="list-style-type:none">
+        <? for (var k = 0; k < aptSkdArr.length; k++) { ?>
+          <? var aptStart = aptSkdArr[k].EventStart.toLocaleTimeString() ?>
+          <? var aptName = aptSkdArr[k].EventTitle ?>
+          <? if (aptSkdArr[k].EventStart.toDateString() == volSkdArr[j].EventStart.toDateString()) { ?>
+            <li>
+              <b><?= aptStart ?></b> <?= aptName ?>
+            </li>
+          <? } ?>
+        <? } ?>
+        </ul>
+      <? } ?>
+    <? } ?>
+    
+    <p>
+      Please confirm that you will be joining us on the dates listed above. <br>
+      If you are unable to come on one or more of the dates you are scheduled above, please let us know as soon as possible. <br>
+      Please let us know if you have any questions or concerns via the link found below. <br>
+      As always thank you for your continued support of Connections and Dress for Success! 
+    </p>
+    
+    <!-- ___________________________________________________________________________________________________________________________________________________________________________________________
+         ___________________________________________________________________________________________________________________________________________________________________________________________
+                                                              THIS IS THE SECTION WITH CONTACT INFORMATION THAT NEEDS TO BE CHANGED
+         ___________________________________________________________________________________________________________________________________________________________________________________________
+         ___________________________________________________________________________________________________________________________________________________________________________________________ -->
+    <table  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <!-- Insert new or additional email addresses on the following line before the ?subject= -->
+    	<td><a href="mailto:NAME@DOMAIN.org,NAME@DOMAIN.org?subject=Confirm%20Schedule&body=Everything%20looks%20good.%20See%20you%20then!" style="background-color: white; color: #AA2222; border: 1px solid black; border-radius: 10px; padding: 6px 8px; text-align: left; text-decoration: none; display: inline-block; font-size: 13px; margin: 4px 2px">Confirm Schedule</a></td>
+        <td><a href="mailto:NAME@DOMAIN.org,NAME@DOMAIN.org?subject=Scheduling%20Conflict" style="background-color: white; color: #AA2222; border: 1px solid black; border-radius: 10px; padding: 6px 8px; text-align: left; text-decoration: none; display: inline-block; font-size: 13px; margin: 4px 2px">Scheduling Conflict</a></td>
+        <td><a href="mailto:NAME@DOMAIN.org,NAME@DOMAIN.org?subject=Questions%20&%20Concerns" style="background-color: white; color: #AA2222; border: 1px solid black; border-radius: 10px; padding: 6px 8px; text-align: left; text-decoration: none; display: inline-block; font-size: 13px; margin: 4px 2px">Questions and Concerns</a></td>
+      </tr>
+    </table>   
+    <table>
+      <tr>
+    	<td><a href="https://sites.google.com/DOMAIN.org/ID/home" target="_blank" style="background-color: white; color: #AA2222; border: 1px solid black; border-radius: 10px; padding: 6px 8px; text-align: left; text-decoration: none; display: inline-block; font-size: 13px; margin: 4px 2px">Volunteer and Suiting Calendar <br>(Requires gmail account to view, Contact Aj for access)</a></td>
+      </tr>
+    </table>
+    <br>
+    
+    <p>
+      Are you available to pickup donations from one or more of the Face and the Body locations at a time you are not scheduled?<br>
+      If so please click the link below to the signup sheet.<br>
+      The first tab will be for signups each week and the second tab will have information such as hours, locations, and frequency of pickup.<br>
+      The signup sheet will be partially wiped each week (and fully at the end of the month) when the schedule is sent out to ensure accuracy.<br>
+      If you have any questions then fell free to email Aj and/or Holly for clarification.
+    </p>
+    
+    <table  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><a href="https://docs.google.com/spreadsheets/d/1FP_cMA90MtAryVpPhklPw7VTYmcrj7bbLZPNRgjUyLs/edit?usp=sharing" target="_blank" style="background-color: white; color: #AA2222; border: 1px solid black; border-radius: 10px; padding: 6px 8px; text-align: left; text-decoration: none; display: inline-block; font-size: 13px; margin: 4px 2px">Link to Signup Spreadsheet</a></td>
+      </tr>
+    </table>
+    <br>
+    
+    <!-- ___________________________________________________________________________________________________________________________________________________________________________________________
+         ___________________________________________________________________________________________________________________________________________________________________________________________
+                                                              THIS IS THE SECTION WITH CONTACT INFORMATION THAT NEEDS TO BE CHANGED
+         ___________________________________________________________________________________________________________________________________________________________________________________________
+         ___________________________________________________________________________________________________________________________________________________________________________________________ -->
+    <p style="font-size:95%;">
+      <!-- DFS Director: Name, Email, and Phone Number -->
+      <b>NAME:</b> NAME@DOMAIN.org, PHONE <br>
+      <!-- Volunteer Coordinator: Name, Email, and Phone Number -->
+      <b>NAME:</b> NAME@DOMAIN.org, PHONE 
+    </p>
+    </body>
+</html>
