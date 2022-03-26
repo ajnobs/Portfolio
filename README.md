@@ -1,3 +1,2 @@
 # Portfolio
-WIP. Items will be added as they are sanitized for public viewing.
-A collection of software I have created as well as other projects that seem pertinent.
+A collection of software I have created as well as other projects that seem pertinent. Items will be added over time and with permission.
